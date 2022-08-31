@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { StyleSheet, View } from "react-native"
+import Controller from "./Controller";
 
 
 function randomPos() {
@@ -50,22 +51,37 @@ const matchData = [
     }
 ]
 
-type movment = 'up' | 'down' | 'left' | 'right'
+export type IMovment = 'up' | 'down' | 'left' | 'right'
 
 const Canva = () => {
+    const [playerPos, setPlayerPos] = useState({x: 0, y: 0})
 
-    function move(to:movment){
-
+    function move(to:IMovment){
+        switch(to){
+            case 'up':  
+                setPlayerPos(prev => ({...prev, y: prev.y-1}))
+            break
+            case 'down':  
+                setPlayerPos(prev => ({...prev, y: prev.y+1}))
+            break
+            case 'left':  
+                setPlayerPos(prev => ({...prev, x: prev.x-1}))
+            break
+            case 'right':  
+                setPlayerPos(prev => ({...prev, x: prev.x+1}))
+            break
+        }
     }
 
     return (
-        <View style={{flex: 1}}>
+        <View style={{flex: 1, width: '100%', justifyContent: 'flex-end'}}>
             <View style={styles.container}>
-                <Entity x={0} y={0} player/>
+                <Entity x={playerPos.x} y={playerPos.y} player/>
                 {matchData.map(data => 
                     <Entity key={data.player.id} x={data.x} y={data.y}/>    
                 )}
             </View>
+            <Controller move={move}/>
         </View>
     )
 }
