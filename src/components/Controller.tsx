@@ -1,3 +1,4 @@
+import { Feather, MaterialIcons } from "@expo/vector-icons"
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native"
 import { IMovment } from "./Canva"
 
@@ -10,16 +11,16 @@ const Controller = ({move}:IController) => {
     return (
         <View style={styles.container}>
             <TouchableOpacity onPress={() => move('up')} style={[styles.button, styles.top]}> 
-                <Text>UP</Text>
+                <MaterialIcons size={40} name="keyboard-arrow-up" style={{color: '#333'}}/>
             </TouchableOpacity>
             <TouchableOpacity onPress={() => move('down')} style={[styles.button, styles.bottom]}> 
-                <Text>DOWN</Text>
+                <MaterialIcons size={40} name="keyboard-arrow-down" style={{color: '#333'}}/>
             </TouchableOpacity>
             <TouchableOpacity onPress={() => move('left')} style={[styles.button, styles.left]}> 
-                <Text>LEFT</Text>
+                <MaterialIcons size={40} name="keyboard-arrow-left" style={{color: '#333'}}/>
             </TouchableOpacity>
             <TouchableOpacity onPress={() => move('right')} style={[styles.button, styles.right]}> 
-                <Text>RIGHT</Text>
+                <MaterialIcons size={40} name="keyboard-arrow-right" style={{color: '#333'}}/>
             </TouchableOpacity>
         </View>
     )
@@ -30,15 +31,16 @@ export default Controller
 const styles = StyleSheet.create({
     container: {
         width: '100%',
-        height: 200,
-        backgroundColor: '#f1f',
-        marginTop: 50,
-        justifyContent: 'center'
+        height: 150,
+        marginTop: 20,
+        justifyContent: 'center',
+        marginBottom: 20
     },
     button: {
         width: 60,
         height: 60,
-        backgroundColor: '#faf',
+        borderRadius: 100,
+        backgroundColor: '#ccc',
         position: "absolute",
         alignItems: 'center',
         justifyContent: 'center',
@@ -52,10 +54,10 @@ const styles = StyleSheet.create({
     },
     left: {
         left: 0,
-        marginLeft: 40
+        marginLeft: 100
     },
     right: {
         right: 0,
-        marginRight: 40
+        marginRight: 100
     }
 })

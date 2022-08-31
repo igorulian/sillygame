@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { StyleSheet, View } from "react-native"
 import Controller from "./Controller";
+import Joystick from "./Joystick";
 
 
 function randomPos() {
@@ -58,18 +59,20 @@ const Canva = () => {
 
     function move(to:IMovment){
         console.log(playerPos)
+        if(playerPos.x === 20 || playerPos.x === -20) return
+        if(playerPos.y === 20 || playerPos.y === -20) return
         switch(to){
-            case 'up':
-                setPlayerPos(prev => prev.y > 0 ? ({...prev, y: prev.y-1}) : prev)
+            case 'up':  
+                setPlayerPos(prev => ({...prev, y: prev.y-1}))
             break
             case 'down':  
-                setPlayerPos(prev => prev.y < 19 ? ({...prev, y: prev.y+1}) : prev)
+                setPlayerPos(prev => ({...prev, y: prev.y+1}))
             break
             case 'left':  
-                setPlayerPos(prev =>  prev.x > 0 ? ({...prev, x: prev.x-1}) : prev)
+                setPlayerPos(prev => ({...prev, x: prev.x-1}))
             break
             case 'right':  
-                setPlayerPos(prev => prev.x < 19 ? ({...prev, x: prev.x+1}) : prev)
+                setPlayerPos(prev => ({...prev, x: prev.x+1}))
             break
         }
     }
@@ -82,7 +85,7 @@ const Canva = () => {
                     <Entity key={data.player.id} x={data.x} y={data.y}/>    
                 )}
             </View>
-            <Controller move={move}/>
+            <Joystick move={(x,y) => {console.log(x,y)}}/>
         </View>
     )
 }
