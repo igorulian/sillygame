@@ -1,7 +1,7 @@
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native"
 import { PanGestureHandler } from "react-native-gesture-handler"
 import Animated, { useAnimatedGestureHandler, useAnimatedStyle, useSharedValue, withSpring, WithSpringConfig } from "react-native-reanimated"
-import { IMovment } from "./Canva"
+import { IMovment } from "./CanvaSmooth"
 
 const springConfig:WithSpringConfig = {
     velocity: 1000,

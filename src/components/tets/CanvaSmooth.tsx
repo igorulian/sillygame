@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { StyleSheet, View } from "react-native"
-import Controller from "./Controller";
+import Controller from "../Controller";
 import Joystick from "./Joystick";
 
 

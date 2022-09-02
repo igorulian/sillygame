@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { StyleSheet, View } from "react-native"
+import { Dimensions, StyleSheet, View } from "react-native"
 import Controller from "./Controller";
 
 
@@ -16,9 +16,25 @@ interface IPixel {
     player?: boolean
 }
 
+const mapSize = 40
+const mapRatio = 3/4
+
+
+const mapWidth = Dimensions.get('window').width
+const playerSize = mapWidth / mapSize
+const mapHeight = Math.ceil((mapWidth / mapRatio) / playerSize) * playerSize
+
+console.log('| - Match Data')
+console.log('| Map Size: ', mapSize)
+console.log('| Map Ratio:', mapRatio)
+console.log('| - Became')
+console.log('| Map Width: ', mapWidth)
+console.log('| Player Size: ', playerSize)
+console.log('| Map Height: ', mapHeight)
+
 const Entity = ({x, y, player=false}: IPixel) => {
     return (
-        <View style={[styles.pixelContainerFill, {top: y*10*2, left: x*10*2}, {backgroundColor: player ? '#169103' : '#3333'}]}>
+        <View style={[styles.pixelContainerFill, {top: y * playerSize, left: x * playerSize}, {backgroundColor: player ? '#169103' : '#3333'}]}>
 
         </View>
     )
@@ -63,19 +79,19 @@ const Canva = () => {
                 setPlayerPos(prev => prev.y > 0 ? ({...prev, y: prev.y-1}) : prev)
             break
             case 'down':  
-                setPlayerPos(prev => prev.y < 19 ? ({...prev, y: prev.y+1}) : prev)
+                setPlayerPos(prev => prev.y < ((mapHeight / playerSize)-1) ? ({...prev, y: prev.y+1}) : prev)
             break
             case 'left':  
                 setPlayerPos(prev =>  prev.x > 0 ? ({...prev, x: prev.x-1}) : prev)
             break
             case 'right':  
-                setPlayerPos(prev => prev.x < 19 ? ({...prev, x: prev.x+1}) : prev)
+                setPlayerPos(prev => prev.x < (mapSize-1) ? ({...prev, x: prev.x+1}) : prev)
             break
         }
     }
 
     return (
-        <View style={{flex: 1, width: '100%', justifyContent: 'flex-end'}}>
+        <View style={{flex: 1, width: '100%', justifyContent: 'flex-start'}}>
             <View style={styles.container}>
                 <Entity x={playerPos.x} y={playerPos.y} player/>
                 {matchData.map(data => 
@@ -91,17 +107,17 @@ export default Canva
 
 const styles = StyleSheet.create({
     container: {
-        width: 400,
-        height: 400,
-        aspectRatio: 1,
+        width: mapWidth,
+        height: mapHeight,
+        aspectRatio: mapRatio,
         backgroundColor: '#ccc'
     },
     line: {
         flexDirection: "row"
     },
     pixelContainerFill: {
-        width: 20,
-        height: 20,
+        width: playerSize,
+        height: playerSize,
         flex: 1,
         aspectRatio: 1,
         position: "absolute",
