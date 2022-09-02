@@ -1,12 +1,15 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet } from 'react-native';
-import { GestureHandlerRootView } from 'react-native-gesture-handler';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import Canva from './src/components/Canva';
-import { io } from "socket.io-client";
-import { useEffect } from 'react';
+import { StyleSheet } from 'react-native'
+import { io } from "socket.io-client"
+import { useEffect } from 'react'
+import { NavigationContainer } from '@react-navigation/native'
+import { createNativeStackNavigator, NativeStackNavigationOptions } from '@react-navigation/native-stack'
+import Home from './src/screens/Home'
+import Match from './src/screens/Match'
 
 const socket = io('http://192.168.0.100:3333')
+
+const Stack = createNativeStackNavigator()
+
 
 export default function App() {
 
@@ -24,38 +27,30 @@ export default function App() {
     });
 
     return () => {
-      socket.off('connect');
-      socket.off('disconnect');
-      socket.off('pong');
+      socket.off('connect')
+      socket.off('disconnect')
+      socket.off('pong')
     };
   }, []);
 
-  const sendPing = () => {
+  const joinMatch = () => {
     console.log('joining')
     socket.emit('join', 'b813b730-dac8-4613-b0da-91bf1145b434');
   }
 
   useEffect(() => {
     setTimeout(() => {
-      sendPing()
+      joinMatch()
     }, 1000);
   },[])
 
 
   return (
-    <GestureHandlerRootView style={{ flex: 1 }}>
-      <SafeAreaView style={styles.container}>
-        <Canva/>
-      </SafeAreaView>
-    </GestureHandlerRootView>
-  );
+    <NavigationContainer>
+      <Stack.Navigator>
+        <Stack.Screen options={{title: 'Partidas', headerTitleAlign: 'center'}} name="Home" component={Home} />
+        <Stack.Screen name="Match" component={Match} />
+      </Stack.Navigator>
+    </NavigationContainer>
+  )
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#333',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
