@@ -2,7 +2,6 @@ import { useState } from "react";
 import { Dimensions, StyleSheet, View } from "react-native"
 import Controller from "./Controller";
 
-
 function randomPos() {
     const min = 0
     const max = 19
@@ -73,7 +72,7 @@ const Canva = () => {
     const [playerPos, setPlayerPos] = useState({x: 0, y: 0})
 
     function move(to:IMovment){
-        console.log(playerPos)
+
         switch(to){
             case 'up':
                 setPlayerPos(prev => prev.y > 0 ? ({...prev, y: prev.y-1}) : prev)
