@@ -1,21 +1,29 @@
-import axios, { AxiosError } from "axios"
+import { useNavigation } from "@react-navigation/native"
+import axios from "axios"
 import { useEffect, useState } from "react"
-import { Alert, FlatList, StyleSheet, View } from "react-native"
-import { SafeAreaView } from "react-native-safe-area-context"
+import { ActivityIndicator, Alert, FlatList, StyleSheet, Text, TouchableOpacity, View } from "react-native"
+import { IMatch } from "../@types/IMatch"
 import { BASE_URL } from "../util/api"
 
-
-const Match = () => {
+interface IMatchComponent {
+    match: IMatch,
+    last: boolean
+}
+const Match = ({match, last}: IMatchComponent) => {
     return (
-        <View style={styles.container}>
-
+        <View style={{...styles.matchContainer, marginBottom: last ? 100 : 0}}>
+            <Text style={styles.matchText}>{match.name}</Text>
+            <Text style={styles.matchTextDescription}>{match.size}x</Text>
+            <Text style={styles.matchTextPlayers}>{match.players.length} / {match.max}</Text>
         </View>
     )
 }
 
 const Home = () => {
-    const [matches, setMatches] = useState([{}])
+    const [matches, setMatches] = useState<IMatch[]>([])
     const [loading, setLoading] = useState(true)
+    const [loadingCreate, setLoadingCreate] = useState(false)
+    const navigation = useNavigation<any>()
     
     async function fetchMatches(){
         setLoading(true)
@@ -28,24 +36,52 @@ const Home = () => {
         }
         setLoading(false)
     }
+
+    async function createMatch() {
+        if(loadingCreate) return
+        setLoadingCreate(true)
+        try{
+            const match = {
+                size: 20,
+                max: 12,
+                name: 'Partidinha maneria'
+            }
+            await axios.post(`${BASE_URL}/match`, match)
+            Alert.alert('Sucesso!', 'Partida criada com sucesso')
+        }catch(error:any){
+            console.log(error)
+        }
+        setLoadingCreate(false)
+    }
+
+    async function goToCreateMatch() {
+        navigation.navigate('NewMatch')
+    }
     
     useEffect(() => {
         fetchMatches()
     },[])
 
     return (
-        <SafeAreaView style={styles.page}>
+        <View style={styles.page}>
             <FlatList
-                style={{width: '100%'}}
+                showsVerticalScrollIndicator={false}
+                style={{width: '100%', paddingBottom: 100}}
                 data={matches}
                 refreshing={loading}
                 onRefresh={() => fetchMatches()}
                 ItemSeparatorComponent={() => <View style={{height: 20}}/>}
-                renderItem={() => 
-                    <Match/>
+                renderItem={({item, index}) => 
+                    <Match 
+                        match={item} 
+                        last={index === (matches.length-1)}
+                    />
                 }
             />
-        </SafeAreaView>
+            <TouchableOpacity style={styles.button} onPress={goToCreateMatch}>
+                <Text style={styles.buttonText}>+ Nova partida</Text>
+            </TouchableOpacity>
+        </View>
     )
 }
 
@@ -54,16 +90,53 @@ export default Home
 const styles = StyleSheet.create({
     page: {
         flex: 1,
-        backgroundColor: '#fff',
+        backgroundColor: '#121212',
         alignItems: 'center',
         paddingHorizontal: 16
     },
-    container: {
+    matchContainer: {
         height: 90,
         borderRadius: 8,
         width: '100%',
-        backgroundColor: '#f5f5f5',
+        backgroundColor: '#1c1c1c',
         borderWidth: 1,
-        borderColor: '#E8E8E8'
+        borderColor: '#bb86fc',
+        padding: 10
+    },
+    matchText: {
+        color: '#bb86fc',
+        fontWeight: 'bold'
+    },
+    matchTextDescription: {
+        color: '#bb86fc',
+        opacity: .5,
+        position: 'absolute',
+        bottom: 0,
+        left: 0,
+        margin: 10
+    },
+    matchTextPlayers: {
+        color: '#bb86fc',
+        position: 'absolute', 
+        bottom: 0, 
+        right: 0, 
+        margin: 10
+    },
+    button: {
+        borderWidth: 1,
+        borderColor: '#02dac5',
+        width: '100%',
+        height: 56,
+        alignItems: 'center',
+        justifyContent: 'center',
+        borderRadius: 8,
+        bottom: 0,
+        margin: 16,
+        position: 'absolute',
+        backgroundColor: '#1c1c1c'
+    },
+    buttonText: {
+        fontWeight: 'bold',
+        color: '#02dac5'
     }
 });
