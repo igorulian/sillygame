@@ -22,7 +22,6 @@ const Match = ({match, last}: IMatchComponent) => {
 const Home = () => {
     const [matches, setMatches] = useState<IMatch[]>([])
     const [loading, setLoading] = useState(true)
-    const [loadingCreate, setLoadingCreate] = useState(false)
     const navigation = useNavigation<any>()
     
     async function fetchMatches(){
@@ -35,23 +34,6 @@ const Home = () => {
             console.log(error)
         }
         setLoading(false)
-    }
-
-    async function createMatch() {
-        if(loadingCreate) return
-        setLoadingCreate(true)
-        try{
-            const match = {
-                size: 20,
-                max: 12,
-                name: 'Partidinha maneria'
-            }
-            await axios.post(`${BASE_URL}/match`, match)
-            Alert.alert('Sucesso!', 'Partida criada com sucesso')
-        }catch(error:any){
-            console.log(error)
-        }
-        setLoadingCreate(false)
     }
 
     async function goToCreateMatch() {
