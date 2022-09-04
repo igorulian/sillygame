@@ -9,8 +9,6 @@ import NewMatch from './screens/NewMatch'
 import { MaterialIcons } from '@expo/vector-icons'; 
 import { CardStyleInterpolators, createStackNavigator  } from '@react-navigation/stack'
 
-const socket = io('http://192.168.0.100:3333')
-
 const Stack = createStackNavigator()
 
 const screenOptions = {
@@ -25,30 +23,6 @@ const screenOptions = {
 
 const Routes = () => {
   const navigation = useNavigation<any>()
-  useEffect(() => {
-    socket.on('connect', () => {
-      console.log('connect')
-    });
-
-    socket.on('disconnect', () => {
-      console.log('disconnect')
-    });
-
-    socket.on('pong', () => {
-      console.log('pong')
-    });
-
-    return () => {
-      socket.off('connect')
-      socket.off('disconnect')
-      socket.off('pong')
-    };
-  }, []);
-
-  const joinMatch = () => {
-    console.log('joining')
-    // socket.emit('join', 'b813b730-dac8-4613-b0da-91bf1145b434');
-  }
 
   useLayoutEffect(() => {
     setStatusBarStyle('light')

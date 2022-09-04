@@ -31,7 +31,7 @@ export default Controller
 const styles = StyleSheet.create({
     container: {
         width: '100%',
-        height: 150,
+        flex: 1,
         marginTop: 20,
         justifyContent: 'center',
         marginBottom: 20

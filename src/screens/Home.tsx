@@ -10,12 +10,18 @@ interface IMatchComponent {
     last: boolean
 }
 const Match = ({match, last}: IMatchComponent) => {
+    const navigation = useNavigation<any>()
+    
+    function joinMatch(){
+        navigation.navigate('Match', {matchID: match.id})
+    }
+
     return (
-        <View style={{...styles.matchContainer, marginBottom: last ? 100 : 0}}>
+        <TouchableOpacity onPress={joinMatch} style={{...styles.matchContainer, marginBottom: last ? 100 : 0}}>
             <Text style={styles.matchText}>{match.name}</Text>
             <Text style={styles.matchTextDescription}>{match.size}x</Text>
             <Text style={styles.matchTextPlayers}>{match.players.length} / {match.max}</Text>
-        </View>
+        </TouchableOpacity>
     )
 }
 
