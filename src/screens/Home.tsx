@@ -42,6 +42,7 @@ const Home = () => {
     
     useEffect(() => {
         fetchMatches()
+        navigation.addListener('focus', () => fetchMatches())
     },[])
 
     return (
@@ -60,6 +61,9 @@ const Home = () => {
                     />
                 }
             />
+            {!loading && (matches.length === 0) && 
+                <Text style={styles.textNotFound}>Nenhuma partida em andamento :|</Text>
+            }
             <TouchableOpacity style={styles.button} onPress={goToCreateMatch}>
                 <Text style={styles.buttonText}>+ Nova partida</Text>
             </TouchableOpacity>
@@ -74,7 +78,8 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: '#121212',
         alignItems: 'center',
-        paddingHorizontal: 16
+        paddingHorizontal: 16,
+        justifyContent: 'center'
     },
     matchContainer: {
         height: 90,
@@ -84,6 +89,11 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         borderColor: '#bb86fc',
         padding: 10
+    },
+    textNotFound: {
+        color: '#ccc',
+        position: 'absolute',
+        alignSelf: 'center'
     },
     matchText: {
         color: '#bb86fc',

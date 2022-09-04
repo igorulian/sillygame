@@ -52,7 +52,7 @@ const Routes = () => {
 
   useLayoutEffect(() => {
     setStatusBarStyle('light')
-    setStatusBarBackgroundColor('#121212', false)
+    setStatusBarBackgroundColor('#121212', true)
   },[])
 
   function back(){
