@@ -5,17 +5,42 @@ import { ActivityIndicator, Alert, StyleSheet, Text, TextInput, TouchableOpacity
 import { BASE_URL } from "../util/api"
 
 
+const maxPlayers = 30
+const minSize = 10
+const maxSize = 50
+
+function randomID(){
+    return Math.round(Math.random() * (10 - 999) + 10)
+}
+
 const NewMatch = () => {
     const [loading, setLoading] = useState(false)
     const navigation = useNavigation<any>()
     const [match, setMatch] = useState({
-        name: '',
+        name: `Parida#${randomID().toString().replace('-', '')}`,
         size: '10',
         max: '10',
     })
+    const [validData, setValidData] = useState({
+        name: true,
+        size: true,
+        max: true
+    })
+
+
+    function checkValidData(){
+        setValidData({
+            name: match.name.length > 0,
+            size: ((parseInt(match.size) >= minSize) && (parseInt(match.size) <= maxSize)),
+            max: ((parseInt(match.max) > 1) && (parseInt(match.max) <= maxPlayers)),
+        })
+    }
+    
+    const allFieldsValid = validData.max && validData.name && validData.size
 
     async function createMatch() {
-        if(loading) return
+        checkValidData()
+        if(loading || !allFieldsValid) return
         setLoading(true)
         try{
             await axios.post(`${BASE_URL}/match`, {
@@ -31,38 +56,49 @@ const NewMatch = () => {
         setLoading(false)
     }
 
-    const allFieldsValid = (match.max !== '' && match.name !== '' && match.size !== '')
 
     return (
         <View style={styles.page}>
             <Text style={styles.inputTitle}>Nome</Text>
             <TextInput 
-                style={match.name === '' ? styles.inputError : styles.input}
+                style={!validData.name ? styles.inputError : styles.input}
                 value={match.name}
-                onChangeText={name => setMatch(old => ({...old, name}))}
+                onChangeText={name => {setMatch(old => ({...old, name})); checkValidData()}}
                 placeholder='Digite o nome da partida'
                 placeholderTextColor='#6d6d6d'
+                onEndEditing={checkValidData}
             />
+            {!validData.name &&
+                <Text style={styles.errorText}>Digite um nome válido para a partida</Text>
+            }
             <Text style={styles.inputTitle}>Máximo de jogadores</Text>
             <TextInput 
-                style={match.max === '' ? styles.inputError : styles.input}
+                style={!validData.max ? styles.inputError : styles.input}
                 keyboardType='decimal-pad'
                 maxLength={2}
                 value={`${match.max}`}
                 onChangeText={max => setMatch(old => ({...old, max}))}
                 placeholder='Digite a quantidade máxima de jogadores'
                 placeholderTextColor='#6d6d6d'
+                onEndEditing={checkValidData}
             />
+            {!validData.max &&
+                <Text style={styles.errorText}>O limite de jogadores deve ser entre 2 e {maxPlayers}</Text>
+            }
             <Text style={styles.inputTitle}>Tamaho do mapa</Text>
             <TextInput 
-                style={match.size === '' ? styles.inputError : styles.input}
+                style={!validData.size ? styles.inputError : styles.input}
                 keyboardType='number-pad'
                 maxLength={2}
+                onEndEditing={checkValidData}
                 value={`${match.size}`}
                 onChangeText={size => setMatch(old => ({...old, size}))}
                 placeholder='Digite o tamanho do mapa'
                 placeholderTextColor='#6d6d6d'
             />
+            {!validData.size &&
+                <Text style={styles.errorText}>O tamanho do mapa deve ser entre {minSize} e {maxSize}</Text>
+            }
             <TouchableOpacity disabled={!allFieldsValid} style={!allFieldsValid ? styles.buttonDisable : styles.button} onPress={createMatch}>
                 <Text style={!allFieldsValid ? styles.buttonTextDisable : styles.buttonText}>
                     {loading ? <ActivityIndicator color='#02dac5'/> : 'Criar partida'}
@@ -99,6 +135,11 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         padding: 10,
         color: '#ccc'
+    },
+    errorText: {
+        color: '#F5566C',
+        fontSize: 12,
+        width: '100%'
     },
     inputTitle: {
         width: '100%',

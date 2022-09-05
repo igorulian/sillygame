@@ -36,10 +36,17 @@ const Routes = () => {
 
   return (
       <Stack.Navigator screenOptions={screenOptions}>
-        <Stack.Screen options={{title: 'Partidas em andamento', headerTitleAlign: 'center'}} name="Home" component={Home} />
+        <Stack.Screen options={{
+            title: 'Partidas em andamento', 
+            headerTitleAlign: 'center', 
+            headerTitleStyle: {fontSize: 16}
+          }} 
+          name="Home" 
+          component={Home} 
+        />
         <Stack.Screen 
           name="Match" 
-          component={Match} 
+          component={Match}
         />
         <Stack.Screen 
           name="NewMatch" 
@@ -47,9 +54,12 @@ const Routes = () => {
           options={{
             title: 'Nova Partida',
             headerTitleAlign: 'center',
+            headerTitleStyle: {
+              fontSize: 16
+            },
             headerLeft: () => (
               <TouchableOpacity onPress={back} style={{marginLeft: 16}}>
-                <MaterialCommunityIcons name="abjad-hebrew" size={24} color="#FFFFFF" />
+                <MaterialIcons name="keyboard-arrow-left" size={24} color="#FFFFFF" />
               </TouchableOpacity>
             ),
           }}

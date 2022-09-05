@@ -45,33 +45,6 @@ const Entity = ({player, match}: IEntity) => {
     )
 }
 
-const matchData = [
-    {
-        x: 4,
-        y: 4,
-        player: {
-            id: 0,
-            name: 'test'
-        }
-    },
-    {
-        x: 10,
-        y: 10,
-        player: {
-            id: 1,
-            name: 'test2'
-        }
-    },
-    {
-        x: 5,
-        y: 12,
-        player: {
-            id: 2,
-            name: 'test3'
-        }
-    }
-]
-
 export type IMovment = 'up' | 'down' | 'left' | 'right'
 
 interface ICanva {
@@ -104,7 +77,6 @@ const Canva = ({matchID}: ICanva) => {
                 player.id === socket.id)[0]
             setPlayerPos({x,y})
             setJoining(false)
-            console.log(callback.match)
         })
 
         socket.on(`update-${matchID}`, ({match}) => {
