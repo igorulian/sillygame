@@ -6,7 +6,7 @@ import Home from './screens/Home'
 import Match from './screens/Match'
 import { setStatusBarBackgroundColor, setStatusBarStyle } from 'expo-status-bar'
 import NewMatch from './screens/NewMatch'
-import { MaterialIcons } from '@expo/vector-icons'; 
+import { MaterialCommunityIcons, MaterialIcons } from '@expo/vector-icons'; 
 import { CardStyleInterpolators, createStackNavigator  } from '@react-navigation/stack'
 
 const Stack = createStackNavigator()
@@ -49,7 +49,7 @@ const Routes = () => {
             headerTitleAlign: 'center',
             headerLeft: () => (
               <TouchableOpacity onPress={back} style={{marginLeft: 16}}>
-                <MaterialIcons name="arrow-back-ios" size={24} color="#FFFFFF" />
+                <MaterialCommunityIcons name="abjad-hebrew" size={24} color="#FFFFFF" />
               </TouchableOpacity>
             ),
           }}

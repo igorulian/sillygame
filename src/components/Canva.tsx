@@ -5,22 +5,41 @@ import { IMatch } from "../@types/IMatch";
 import { IPlayer } from "../@types/IPlayer";
 import Controller from "./Controller";
 
-export const socket = io('http://192.168.0.112:3333')
+export const socket = io('http://192.168.0.100:3333')
 
-interface IPixel {
+interface IEntity {
     player: IPlayer,
     match: IMatch
 }
 
-const mapRatio = 3/4
-const mapWidth = Dimensions.get('window').width
+interface IPlayerEntity {
+    x: number,
+    y: number,
+    match: IMatch,
+    color?: string
+}
 
-const Entity = ({player, match}: IPixel) => {
-    const {x, y, id} = player
-    const isCurrentPlayer = (socket.id === id)
-    const playerSize = mapWidth / match.size
+
+const mapRatio = 3/4
+const screenWidth = Dimensions.get('screen').width
+
+const Player = ({match, x, y, color}: IPlayerEntity) => {
+    const size = screenWidth / match.size
     return (
-        <View style={[styles.pixelContainerFill,{width: playerSize, height: playerSize} ,{top: y * playerSize, left: x * playerSize}, {backgroundColor: isCurrentPlayer ? '#bb86fc' : '#3333'}]}>
+        <View style={[styles.pixelContainerFill,{width: size, height: size} ,{top: y * size, left: x * size}, {backgroundColor: color || '#bb86fc'}]}>
+
+        </View>
+    )
+}
+
+const Entity = ({player, match}: IEntity) => {
+    const {x, y, id} = player
+    const size = screenWidth / match.size
+
+    if(id === socket.id) return <></>
+
+    return (
+        <View style={[styles.pixelContainerFill,{width: size, height: size} ,{top: y * size, left: x * size}, {backgroundColor: '#5c5c5ccc'}]}>
 
         </View>
     )
@@ -75,8 +94,8 @@ const Canva = ({matchID}: ICanva) => {
     const [match, setMatch] = useState<IMatch>(defaultMatch)
     const [joining, setJoining] = useState(true)
     const [playerPos, setPlayerPos] = useState({x: 0, y: 0})
-    const [playerSize] = useState(mapWidth / match.size)
-    const [mapHeight] = useState(Math.ceil((mapWidth / mapRatio) / playerSize) * playerSize)
+    const playerSize = screenWidth / match.size
+    const mapHeight = Math.ceil((screenWidth / mapRatio) / playerSize) * playerSize
     
     useEffect(() => {
         socket.emit('join', {matchID}, (callback:ICallBack) => {
@@ -85,11 +104,11 @@ const Canva = ({matchID}: ICanva) => {
                 player.id === socket.id)[0]
             setPlayerPos({x,y})
             setJoining(false)
+            console.log(callback.match)
         })
 
         socket.on(`update-${matchID}`, ({match}) => {
             setMatch(match)
-            console.log('update match')
         });
     
         return () => {
@@ -124,6 +143,7 @@ const Canva = ({matchID}: ICanva) => {
     return (
         <View style={{flex: 1, width: '100%', justifyContent: 'flex-start'}}>
             <View style={[styles.container, {height: mapHeight}]}>
+                <Player match={match} x={playerPos.x} y={playerPos.y}/>
                 {match?.players.map(player => 
                     <Entity key={player.id} player={player} match={match}/>    
                 )}
@@ -137,9 +157,9 @@ export default Canva
 
 const styles = StyleSheet.create({
     container: {
-        width: mapWidth,
+        width: screenWidth,
         aspectRatio: mapRatio,
-        backgroundColor: '#1c1c1c'
+        backgroundColor: '#121212'
     },
     line: {
         flexDirection: "row"
@@ -147,9 +167,7 @@ const styles = StyleSheet.create({
     pixelContainerFill: {
         flex: 1,
         aspectRatio: 1,
-        position: "absolute",
-        borderWidth: .2,
-        borderColor: '#fff'
+        position: "absolute"
     }
     
 })

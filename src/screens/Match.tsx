@@ -25,7 +25,7 @@ export default Match
 const styles = StyleSheet.create({
     container: {
       flex: 1,
-      backgroundColor: '#333',
+      backgroundColor: '#1d1d1d',
       alignItems: 'center',
       justifyContent: 'center',
     },
