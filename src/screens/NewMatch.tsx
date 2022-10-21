@@ -17,7 +17,7 @@ const NewMatch = () => {
     const [loading, setLoading] = useState(false)
     const navigation = useNavigation<any>()
     const [match, setMatch] = useState({
-        name: `Parida#${randomID().toString().replace('-', '')}`,
+        name: `Match#${randomID().toString().replace('-', '')}`,
         size: '10',
         max: '10',
     })
@@ -59,7 +59,7 @@ const NewMatch = () => {
 
     return (
         <View style={styles.page}>
-            <Text style={styles.inputTitle}>Nome</Text>
+            <Text style={styles.inputTitle}>Name</Text>
             <TextInput 
                 style={!validData.name ? styles.inputError : styles.input}
                 value={match.name}
@@ -71,7 +71,7 @@ const NewMatch = () => {
             {!validData.name &&
                 <Text style={styles.errorText}>Digite um nome válido para a partida</Text>
             }
-            <Text style={styles.inputTitle}>Máximo de jogadores</Text>
+            <Text style={styles.inputTitle}>Maximum players</Text>
             <TextInput 
                 style={!validData.max ? styles.inputError : styles.input}
                 keyboardType='decimal-pad'
@@ -83,9 +83,9 @@ const NewMatch = () => {
                 onEndEditing={checkValidData}
             />
             {!validData.max &&
-                <Text style={styles.errorText}>O limite de jogadores deve ser entre 2 e {maxPlayers}</Text>
+                <Text style={styles.errorText}>The player limit must be between 2 and {maxPlayers}</Text>
             }
-            <Text style={styles.inputTitle}>Tamaho do mapa</Text>
+            <Text style={styles.inputTitle}>Map size</Text>
             <TextInput 
                 style={!validData.size ? styles.inputError : styles.input}
                 keyboardType='number-pad'
@@ -101,7 +101,7 @@ const NewMatch = () => {
             }
             <TouchableOpacity disabled={!allFieldsValid} style={!allFieldsValid ? styles.buttonDisable : styles.button} onPress={createMatch}>
                 <Text style={!allFieldsValid ? styles.buttonTextDisable : styles.buttonText}>
-                    {loading ? <ActivityIndicator color='#02dac5'/> : 'Criar partida'}
+                    {loading ? <ActivityIndicator color='#02dac5'/> : 'Create match'}
                 </Text>
             </TouchableOpacity>
         </View>

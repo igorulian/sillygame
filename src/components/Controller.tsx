@@ -11,16 +11,16 @@ const Controller = ({move}:IController) => {
     return (
         <View style={styles.container}>
             <TouchableOpacity onPress={() => move('up')} style={[styles.button, styles.top]}> 
-                <MaterialIcons size={40} name="keyboard-arrow-up" style={{color: '#333'}}/>
+                <MaterialIcons size={40} name="keyboard-arrow-up" style={{color: '#ccc'}}/>
             </TouchableOpacity>
             <TouchableOpacity onPress={() => move('down')} style={[styles.button, styles.bottom]}> 
-                <MaterialIcons size={40} name="keyboard-arrow-down" style={{color: '#333'}}/>
+                <MaterialIcons size={40} name="keyboard-arrow-down" style={{color: '#ccc'}}/>
             </TouchableOpacity>
             <TouchableOpacity onPress={() => move('left')} style={[styles.button, styles.left]}> 
-                <MaterialIcons size={40} name="keyboard-arrow-left" style={{color: '#333'}}/>
+                <MaterialIcons size={40} name="keyboard-arrow-left" style={{color: '#ccc'}}/>
             </TouchableOpacity>
             <TouchableOpacity onPress={() => move('right')} style={[styles.button, styles.right]}> 
-                <MaterialIcons size={40} name="keyboard-arrow-right" style={{color: '#333'}}/>
+                <MaterialIcons size={40} name="keyboard-arrow-right" style={{color: '#ccc'}}/>
             </TouchableOpacity>
         </View>
     )
@@ -40,17 +40,19 @@ const styles = StyleSheet.create({
         width: 60,
         height: 60,
         borderRadius: 100,
-        backgroundColor: '#ccc',
+        // backgroundColor: '#ccc',
         position: "absolute",
         alignItems: 'center',
         justifyContent: 'center',
         alignSelf: 'center'
     },
     top: {
-        top: 0
+        top: 0,
+        marginTop: -20
     },
     bottom: {
-        bottom: 0
+        bottom: 0,
+        marginBottom: -20
     },
     left: {
         left: 0,

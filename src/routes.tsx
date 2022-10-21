@@ -37,7 +37,7 @@ const Routes = () => {
   return (
       <Stack.Navigator screenOptions={screenOptions}>
         <Stack.Screen options={{
-            title: 'Partidas em andamento', 
+            title: 'Matches in progress', 
             headerTitleAlign: 'center', 
             headerTitleStyle: {fontSize: 16}
           }} 
@@ -52,7 +52,7 @@ const Routes = () => {
           name="NewMatch" 
           component={NewMatch}
           options={{
-            title: 'Nova Partida',
+            title: 'New match',
             headerTitleAlign: 'center',
             headerTitleStyle: {
               fontSize: 16

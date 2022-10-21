@@ -68,10 +68,10 @@ const Home = () => {
                 }
             />
             {!loading && (matches.length === 0) && 
-                <Text style={styles.textNotFound}>Nenhuma partida em andamento :|</Text>
+                <Text style={styles.textNotFound}>No matches in progress :|</Text>
             }
             <TouchableOpacity style={styles.button} onPress={goToCreateMatch}>
-                <Text style={styles.buttonText}>+ Nova partida</Text>
+                <Text style={styles.buttonText}>+ New match</Text>
             </TouchableOpacity>
         </View>
     )
