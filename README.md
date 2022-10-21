@@ -79,9 +79,3 @@ This project is under license [MIT](./LICENSE.md).
 ---
 
 Made with ❤️ by Igor Ulian
-
----
-
-## README Version
-
-[Português 🇧🇷](./README-pt-br.md) [English 🇺🇸](./README.md)
